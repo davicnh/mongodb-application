@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: app-mongodb
+  data:
+    mongodb:
+      uri: mongodb+srv://davicunha910_db_user:255225@trabalho-mongodb.qr2nij1.mongodb.net/
+server:
+  port: 8085
