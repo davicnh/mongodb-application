@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Plataforma E-Commerce</title>
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+</head>
+<body>
+<header>
+    <h1>Plataforma E-Commerce</h1>
+    <p>Gestão de clientes, produtos, pedidos e carrinhos (B2C / B2B)</p>
+    <nav>
+        <a href="/" th:href="@{/}" class="current">Início</a>
+        <a href="/produtos" th:href="@{/produtos}">Produtos</a>
+        <a href="/clientes" th:href="@{/clientes}">Clientes</a>
+        <a href="/pedidos" th:href="@{/pedidos}">Pedidos</a>
+        <a href="/carrinhos" th:href="@{/carrinhos}">Carrinhos</a>
+    </nav>
+</header>
+
+<main>
+    <h2>Cadastros</h2>
+    <section>
+        <article>
+            <h3>Produtos</h3>
+            <p>Catálogo com atributos variáveis por categoria.</p>
+            <a href="/produtos" th:href="@{/produtos}">Abrir produtos</a>
+        </article>
+        <article>
+            <h3>Clientes</h3>
+            <p>Pessoas físicas (B2C) e empresas (B2B).</p>
+            <a href="/clientes" th:href="@{/clientes}">Abrir clientes</a>
+        </article>
+    </section>
+
+    <h2>Vendas</h2>
+    <section>
+        <article>
+            <h3>Pedidos</h3>
+            <p>Pedidos com itens e preços da época da compra.</p>
+            <a href="/pedidos" th:href="@{/pedidos}">Abrir pedidos</a>
+        </article>
+        <article>
+            <h3>Carrinhos</h3>
+            <p>Carrinhos de sessão, removidos automaticamente ao expirar.</p>
+            <a href="/carrinhos" th:href="@{/carrinhos}">Abrir carrinhos</a>
+        </article>
+    </section>
+</main>
+
+</body>
+</html>
