@@ -1,5 +1,9 @@
 package org.example.appmongodb.entity;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -17,11 +21,23 @@ import java.util.UUID;
 public class Produto {
 
     private UUID id;
+
+    @NotBlank
     private String nome;
-    private String sk;
+
+    @NotBlank
+    private String sku;
+
+    @NotBlank
     private String categoria;
+
     private String descricao;
+
+    @NotNull
+    @Positive
     private BigDecimal preco;
+
+    @Min(0)
     private Integer estoque;
     private Map<String, Object> atributos;
     private boolean ativo;
