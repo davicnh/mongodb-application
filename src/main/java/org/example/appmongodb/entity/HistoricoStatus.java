@@ -1,8 +1,10 @@
 package org.example.appmongodb.entity;
 
 import lombok.*;
+import org.example.appmongodb.entity.enums.StatusPedido;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -12,7 +14,6 @@ import java.time.LocalDate;
 @Builder
 public class HistoricoStatus {
 
-    private HistoricoStatus status;
-    private LocalDate data;
-    private String observacao;
+    private StatusPedido status;
+    private LocalDateTime data;
 }

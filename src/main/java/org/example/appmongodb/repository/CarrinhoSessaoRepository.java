@@ -5,5 +5,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.UUID;
 
-public interface CarrinhoSessaoRepository extends MongoRepository<CarrinhoSessao, UUID> {
+public interface CarrinhoSessaoRepository extends MongoRepository<CarrinhoSessao, String> {
 }

@@ -4,8 +4,6 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-import java.util.UUID;
-
 @Getter
 @Setter
 @ToString
@@ -15,7 +13,7 @@ import java.util.UUID;
 public class ItemCarrinho {
 
     @NotBlank
-    private UUID prudutoid;
+    private String prudutoid;
 
     @Min(1)
     private int quantidade;

@@ -1,13 +1,12 @@
 package org.example.appmongodb.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.appmongodb.dto.ProdutoDTO;
+import org.example.appmongodb.entity.Produto;
 import org.example.appmongodb.service.ProdutoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/produtos")
@@ -17,7 +16,7 @@ public class ProdutoController {
     private final ProdutoService service;
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+    public ResponseEntity<Void> delete(@PathVariable String id) {
         if (service.getById(id) == null) {
             return ResponseEntity.notFound().build();
         }
@@ -26,26 +25,26 @@ public class ProdutoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProdutoDTO>> findAll() {
-        List<ProdutoDTO> produtos = service.getAll();
+    public ResponseEntity<List<Produto>> findAll() {
+        List<Produto> produtos = service.getAll();
         return ResponseEntity.ok(produtos);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProdutoDTO> findById(@PathVariable UUID id) {
-        ProdutoDTO dto = service.getById(id);
-        return ResponseEntity.ok(dto);
+    public ResponseEntity<Produto> findById(@PathVariable String id) {
+        Produto produto = service.getById(id);
+        return ResponseEntity.ok(produto);
     }
 
     @PostMapping
-    public ResponseEntity<ProdutoDTO> create(@RequestBody ProdutoDTO produtoDTO) {
-        ProdutoDTO produto = service.save(produtoDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(produto);
+    public ResponseEntity<Produto> create(@RequestBody Produto produto) {
+        Produto produtoNovo = service.save(produto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(produtoNovo);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProdutoDTO> update(@PathVariable UUID id,@RequestBody ProdutoDTO produtoDTO) {
-        ProdutoDTO atualizado = service.update(id, produtoDTO);
+    public ResponseEntity<Produto> update(@PathVariable String id,@RequestBody Produto produto) {
+        Produto atualizado = service.update(id, produto);
         return ResponseEntity.ok(atualizado);
     }
 }
