@@ -1,53 +1,72 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Plataforma E-Commerce</title>
     <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+
 <header>
     <h1>Plataforma E-Commerce</h1>
-    <p>Gestão de clientes, produtos, pedidos e carrinhos (B2C / B2B)</p>
+    <p>Gestão de clientes, produtos, pedidos e carrinhos</p>
+
     <nav>
-        <a href="/" th:href="@{/}" class="current">Início</a>
-        <a href="/produtos" th:href="@{/produtos}">Produtos</a>
-        <a href="/clientes" th:href="@{/clientes}">Clientes</a>
-        <a href="/pedidos" th:href="@{/pedidos}">Pedidos</a>
-        <a href="/carrinhos" th:href="@{/carrinhos}">Carrinhos</a>
+        <a href="index.html" aria-current="page">Início</a>
+        <a href="js/html/produtos.html">Produtos</a>
+        <a href="js/html/clientes.html">Clientes</a>
+        <a href="js/html/pedidos.html">Pedidos</a>
+        <a href="js/html/carrinhos.html">Carrinhos</a>
     </nav>
 </header>
 
 <main>
-    <h2>Cadastros</h2>
     <section>
+        <h2>Painel de gerenciamento</h2>
+        <p>
+            Bem-vindo à plataforma de e-commerce.
+            Selecione uma das opções abaixo para gerenciar o sistema.
+        </p>
+    </section>
+
+    <h2>Cadastros</h2>
+
+    <section class="cards">
         <article>
             <h3>Produtos</h3>
-            <p>Catálogo com atributos variáveis por categoria.</p>
-            <a href="/produtos" th:href="@{/produtos}">Abrir produtos</a>
+            <p>Gerencie o catálogo, preços, estoque e categorias.</p>
+            <a href="js/html/produtos.html">Gerenciar produtos →</a>
         </article>
+
         <article>
             <h3>Clientes</h3>
-            <p>Pessoas físicas (B2C) e empresas (B2B).</p>
-            <a href="/clientes" th:href="@{/clientes}">Abrir clientes</a>
+            <p>Consulte e gerencie pessoas físicas e empresas.</p>
+            <a href="js/html/clientes.html">Gerenciar clientes →</a>
         </article>
     </section>
 
     <h2>Vendas</h2>
-    <section>
+
+    <section class="cards">
         <article>
             <h3>Pedidos</h3>
-            <p>Pedidos com itens e preços da época da compra.</p>
-            <a href="/pedidos" th:href="@{/pedidos}">Abrir pedidos</a>
+            <p>Consulte pedidos, itens e valores das compras.</p>
+            <a href="js/html/pedidos.html">Gerenciar pedidos →</a>
         </article>
+
         <article>
             <h3>Carrinhos</h3>
-            <p>Carrinhos de sessão, removidos automaticamente ao expirar.</p>
-            <a href="/carrinhos" th:href="@{/carrinhos}">Abrir carrinhos</a>
+            <p>Consulte os carrinhos e seus respectivos itens.</p>
+            <a href="js/html/carrinhos.html">Gerenciar carrinhos →</a>
         </article>
     </section>
 </main>
+
+<footer>
+    <p>Plataforma E-Commerce · API REST com Spring Boot e MongoDB</p>
+</footer>
 
 </body>
 </html>
