@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pedidos | Plataforma E-Commerce</title>
+
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<header>
+    <h1>Plataforma E-Commerce</h1>
+    <p>Consulta e gerenciamento de pedidos</p>
+
+
+    <nav>
+        <a href="/" aria-current="page">Início</a>
+        <a href="/pagina/produtos">Produtos</a>
+        <a href="/pagina/clientes">Clientes</a>
+        <a href="/pagina/pedidos">Pedidos</a>
+        <a href="/pagina/carrinhos">Carrinhos</a>
+    </nav>
+
+</header>
+
+<main>
+    <section>
+        <h2>Painel de pedidos</h2>
+        <p>Consulte os pedidos registrados na plataforma.</p>
+
+        <button type="button" id="btn-atualizar">
+            Atualizar pedidos
+        </button>
+
+        <p id="mensagem" role="status"></p>
+    </section>
+
+    <section>
+        <h2>Pedidos cadastrados</h2>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Pedido</th>
+                <th>Cliente</th>
+                <th>Data</th>
+                <th>Itens</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+
+            <tbody id="lista-pedidos">
+            <tr>
+                <td colspan="7">Carregando pedidos...</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section id="detalhes-pedido" hidden>
+        <h2>Detalhes do pedido</h2>
+
+        <p><strong>ID:</strong> <span id="detalhe-id"></span></p>
+        <p><strong>Cliente:</strong> <span id="detalhe-cliente"></span></p>
+        <p><strong>Status:</strong> <span id="detalhe-status"></span></p>
+        <p><strong>Data:</strong> <span id="detalhe-data"></span></p>
+        <p><strong>Total:</strong> <span id="detalhe-total"></span></p>
+
+        <h3>Itens do pedido</h3>
+        <ul id="detalhe-itens"></ul>
+
+        <h3>Endereço de entrega</h3>
+        <p id="detalhe-endereco"></p>
+
+        <button type="button" id="btn-fechar-detalhes">
+            Fechar detalhes
+        </button>
+    </section>
+</main>
+
+<script src="/js/pedidos.js"></script>
+</body>
+</html>

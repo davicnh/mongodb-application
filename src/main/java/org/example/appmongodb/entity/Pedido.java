@@ -24,7 +24,6 @@ public class Pedido {
     @NotBlank
     private String clienteId;
 
-
     private ClienteSnapshot clienteSnapshot;
 
     @NotEmpty

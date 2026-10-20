@@ -13,7 +13,7 @@ import lombok.*;
 public class ItemCarrinho {
 
     @NotBlank
-    private String prudutoid;
+    private String prudutoId;
 
     @Min(1)
     private int quantidade;

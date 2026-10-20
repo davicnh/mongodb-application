@@ -1,10 +1,74 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Carrinhos de Sessão</title>
+
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 
+<header>
+    <h1>Carrinhos de Sessão</h1>
+
+    <nav>
+        <a href="/" aria-current="page">Início</a>
+        <a href="/pagina/produtos">Produtos</a>
+        <a href="/pagina/clientes">Clientes</a>
+        <a href="/pagina/pedidos">Pedidos</a>
+        <a href="/pagina/carrinhos">Carrinhos</a>
+    </nav>
+
+</header>
+
+<main>
+    <section>
+        <h2>Lista de carrinhos</h2>
+
+        <button type="button" id="btn-atualizar">Atualizar lista</button>
+
+        <p id="mensagem"></p>
+
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Sessão</th>
+                <th>Quantidade de itens</th>
+                <th>Atualizado em</th>
+                <th>Expira em</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody id="lista-carrinhos">
+            <tr>
+                <td colspan="7">Carregando carrinhos...</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section id="detalhes-carrinho" hidden>
+        <h2>Detalhes do carrinho</h2>
+
+        <p><strong>ID:</strong> <span id="detalhe-id"></span></p>
+        <p><strong>Cliente:</strong> <span id="detalhe-cliente"></span></p>
+        <p><strong>Sessão:</strong> <span id="detalhe-sessao"></span></p>
+        <p><strong>Atualizado em:</strong> <span id="detalhe-atualizado"></span></p>
+        <p><strong>Expira em:</strong> <span id="detalhe-expira"></span></p>
+
+        <h3>Itens do carrinho</h3>
+        <ul id="detalhe-itens"></ul>
+
+        <button type="button" id="btn-fechar-detalhes">
+            Fechar detalhes
+        </button>
+    </section>
+</main>
+
+<script src="/js/carrinhos.js"></script>
 </body>
 </html>
