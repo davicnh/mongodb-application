@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Carrinhos de Sessão</title>
+    <title>Carrinhos | Plataforma E-Commerce</title>
 
     <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
     <link rel="stylesheet" href="/css/style.css">
@@ -11,25 +11,39 @@
 <body>
 
 <header>
-    <h1>Carrinhos de Sessão</h1>
+    <h1>Plataforma E-Commerce</h1>
+    <p>Gerenciamento de carrinhos de sessão</p>
 
     <nav>
-        <a href="/" aria-current="page">Início</a>
+        <a href="/">Início</a>
         <a href="/pagina/produtos">Produtos</a>
         <a href="/pagina/clientes">Clientes</a>
         <a href="/pagina/pedidos">Pedidos</a>
-        <a href="/pagina/carrinhos">Carrinhos</a>
+        <a href="/pagina/carrinhos" aria-current="page">Carrinhos</a>
     </nav>
-
 </header>
 
 <main>
     <section>
+        <h2>Criar carrinho</h2>
+        <p>Informe o ID de um cliente já cadastrado. A sessão é opcional.</p>
+
+        <form id="form-criar-carrinho">
+            <label for="cliente-id">ID do cliente</label>
+            <input id="cliente-id" name="clienteId" required>
+
+            <label for="sessao-id">ID da sessão (opcional)</label>
+            <input id="sessao-id" name="sessaoId">
+
+            <button type="submit">Criar carrinho</button>
+        </form>
+    </section>
+
+    <section>
         <h2>Lista de carrinhos</h2>
 
         <button type="button" id="btn-atualizar">Atualizar lista</button>
-
-        <p id="mensagem"></p>
+        <p id="mensagem" role="status"></p>
 
         <table>
             <thead>
@@ -63,9 +77,23 @@
         <h3>Itens do carrinho</h3>
         <ul id="detalhe-itens"></ul>
 
-        <button type="button" id="btn-fechar-detalhes">
-            Fechar detalhes
-        </button>
+        <h3>Adicionar produto</h3>
+        <form id="form-adicionar-item">
+            <label for="produto-id">ID do produto</label>
+            <input id="produto-id" name="produtoId" required>
+
+            <label for="quantidade">Quantidade</label>
+            <input id="quantidade" name="quantidade"
+                   type="number" min="1" value="1" required>
+
+            <button type="submit">Adicionar ao carrinho</button>
+        </form>
+
+        <p>
+            <button type="button" id="btn-finalizar">Finalizar compra</button>
+            <button type="button" id="btn-apagar">Excluir carrinho</button>
+            <button type="button" id="btn-fechar-detalhes">Fechar detalhes</button>
+        </p>
     </section>
 </main>
 

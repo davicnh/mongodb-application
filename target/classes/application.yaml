@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: app-mongodb
+  mongodb:
+    uri: mongodb+srv://davicunha910_db_user:255225@trabalho-mongodb.qr2nijl.mongodb.net/
+    database: ecommerce
+  data:
+    mongodb:
+      auto-index-creation: true
+server:
+  port: 8085
