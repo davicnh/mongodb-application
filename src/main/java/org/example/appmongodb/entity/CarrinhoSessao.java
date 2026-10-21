@@ -22,6 +22,6 @@ public class CarrinhoSessao {
     private List<ItemCarrinho> itens;
     private LocalDateTime atualizadoEm;
 
-    @Indexed
+    @Indexed(expireAfter = "0")
     private LocalDateTime expiraEm;
 }

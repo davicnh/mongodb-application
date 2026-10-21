@@ -4,5 +4,6 @@ spring:
   data:
     mongodb:
       uri: mongodb+srv://davicunha910_db_user:255225@trabalho-mongodb.qr2nij1.mongodb.net/
+      auto-index-creation: true
 server:
   port: 8085

@@ -1,5 +1,6 @@
 package org.example.appmongodb.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.appmongodb.entity.Produto;
 import org.example.appmongodb.service.ProdutoService;
@@ -17,9 +18,6 @@ public class ProdutoController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id) {
-        if (service.getById(id) == null) {
-            return ResponseEntity.notFound().build();
-        }
         service.deleteById(id);
         return ResponseEntity.ok().build();
     }
@@ -37,13 +35,13 @@ public class ProdutoController {
     }
 
     @PostMapping
-    public ResponseEntity<Produto> create(@RequestBody Produto produto) {
+    public ResponseEntity<Produto> create(@Valid @RequestBody Produto produto) {
         Produto produtoNovo = service.save(produto);
         return ResponseEntity.status(HttpStatus.CREATED).body(produtoNovo);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Produto> update(@PathVariable String id,@RequestBody Produto produto) {
+    public ResponseEntity<Produto> update(@PathVariable String id, @Valid @RequestBody Produto produto) {
         Produto atualizado = service.update(id, produto);
         return ResponseEntity.ok(atualizado);
     }

@@ -46,7 +46,7 @@ async function carregarCarrinhos() {
                 <td>${escaparHTML(carrinho.id || "-")}</td>
                 <td>${escaparHTML(carrinho.clienteId || "-")}</td>
                 <td>${escaparHTML(carrinho.sessaoId || "-")}</td>
-                <td>${Array.isArray(carrinho.items) ? carrinho.items.length : 0}</td>
+                <td>${Array.isArray(carrinho.itens) ? carrinho.items.length : 0}</td>
                 <td>${escaparHTML(formatarData(carrinho.atualizadoEm))}</td>
                 <td>${escaparHTML(formatarData(carrinho.expiraEm))}</td>
                 <td>

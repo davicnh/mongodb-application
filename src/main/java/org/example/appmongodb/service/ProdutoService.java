@@ -5,6 +5,7 @@ import org.example.appmongodb.entity.Produto;
 import org.example.appmongodb.repository.ProdutoRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -26,18 +27,26 @@ public class ProdutoService {
     }
 
     public Produto save(Produto produto) {
-        boolean skuExiste = repository.existsById(produto.getSku());
+        produto.setId(null);
+        produto.setSku(produto.getSku().trim().toUpperCase());
 
-        if (skuExiste) {
-            throw new RuntimeException("Já existe um produto com esse sku.");
+        if (repository.existsBySku(produto.getSku())) {
+            throw new IllegalArgumentException("Já existe um produto com o sku " + produto.getSku());
         }
+
         return repository.save(produto);
     }
 
     public Produto update(String id, Produto produtoAtualizado) {
-        Produto produto = repository.findById(id).orElseThrow(() -> new RuntimeException("Produto não encontrado."));
+        Produto produto = repository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Produto não encontrado."));
 
-        produto.setSku(produtoAtualizado.getSku());
+        String sku = produtoAtualizado.getSku().trim().toUpperCase();
+        if (!produto.getSku().equals(sku) && repository.existsBySku(sku)) {
+            throw new IllegalArgumentException("Já existe um produto com o sku " + sku);
+        }
+
+        produto.setSku(sku);
         produto.setNome(produtoAtualizado.getNome());
         produto.setCategoria(produtoAtualizado.getCategoria());
         produto.setDescricao(produtoAtualizado.getDescricao());
