@@ -15,7 +15,7 @@ public class ProdutoService {
 
     public Produto getById(String id) {
         return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado."));
+                .orElseThrow(() -> new NoSuchElementException("Produto não encontrado."));
     }
 
     public List<Produto> getAll() {

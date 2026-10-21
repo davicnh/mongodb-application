@@ -46,7 +46,7 @@ async function carregarCarrinhos() {
                 <td>${escaparHTML(carrinho.id || "-")}</td>
                 <td>${escaparHTML(carrinho.clienteId || "-")}</td>
                 <td>${escaparHTML(carrinho.sessaoId || "-")}</td>
-                <td>${Array.isArray(carrinho.itens) ? carrinho.items.length : 0}</td>
+                <td>${Array.isArray(carrinho.itens) ? carrinho.itens.length : 0}</td>
                 <td>${escaparHTML(formatarData(carrinho.atualizadoEm))}</td>
                 <td>${escaparHTML(formatarData(carrinho.expiraEm))}</td>
                 <td>
@@ -101,12 +101,12 @@ function mostrarDetalhes(carrinho) {
     const listaItens = document.getElementById("detalhe-itens");
     listaItens.innerHTML = "";
 
-    if (Array.isArray(carrinho.items) && carrinho.items.length > 0) {
-        carrinho.items.forEach((itemCarrinho) => {
+    if (Array.isArray(carrinho.itens) && carrinho.itens.length > 0) {
+        carrinho.itens.forEach((itemCarrinho) => {
             const item = document.createElement("li");
 
             item.textContent =
-                `ID do produto: ${itemCarrinho.prudutoid || "-"} | ` +
+                `ID do produto: ${itemCarrinho.prudutoId || "-"} | ` +
                 `Quantidade: ${itemCarrinho.quantidade}`;
 
             listaItens.appendChild(item);
