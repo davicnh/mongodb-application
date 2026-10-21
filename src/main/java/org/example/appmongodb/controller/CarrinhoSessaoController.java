@@ -9,6 +9,7 @@ import org.example.appmongodb.service.CarrinhoSessaoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -61,5 +62,10 @@ public class CarrinhoSessaoController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String requisicaoInvalida(IllegalArgumentException e) {
         return e.getMessage();
+    }
+
+    @GetMapping
+    public List<CarrinhoSessao> findAll() {
+        return service.findAll();
     }
 }

@@ -126,6 +126,10 @@ public class CarrinhoSessaoService {
         carrinho.setAtualizadoEm(agora);
         carrinho.setExpiraEm(agora.plusMinutes(VALIDADE_MINUTOS));
     }
+
+    public List<CarrinhoSessao> findAll() {
+        return repository.findAll();
+    }
 }
 
 
