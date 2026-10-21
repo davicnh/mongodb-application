@@ -1,6 +1,7 @@
 package org.example.appmongodb.entity;
 
 import lombok.*;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -18,7 +19,9 @@ public class CarrinhoSessao {
     private String id;
     private String clienteId;
     private String sessaoId;
-    private List<ItemCarrinho> items;
+    private List<ItemCarrinho> itens;
     private LocalDateTime atualizadoEm;
-    private Date expiraEm;
+
+    @Indexed
+    private LocalDateTime expiraEm;
 }
