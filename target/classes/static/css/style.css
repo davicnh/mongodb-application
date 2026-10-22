@@ -1,0 +1,41 @@
+
+body {
+    max-width: 1200px;
+}
+
+header {
+    border-radius: 0 0 12px 12px;
+}
+
+main section {
+    margin-bottom: 2rem;
+}
+
+form {
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+input,
+textarea {
+    width: 100%;
+}
+
+input[type="checkbox"] {
+    width: auto;
+}
+
+table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+button {
+    margin-right: 0.5rem;
+}
+
+#mensagem {
+    font-weight: bold;
+}

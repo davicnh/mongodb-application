@@ -3,120 +3,155 @@ const API_URL = "/pedidos";
 document.addEventListener("DOMContentLoaded", () => {
     carregarPedidos();
 
-    const botaoAtualizar = document.getElementById("btn-atualizar");
+    document.getElementById("btn-atualizar")
+        .addEventListener("click", carregarPedidos);
 
-    if (botaoAtualizar) {
-        botaoAtualizar.addEventListener("click", carregarPedidos);
-    }
+    document.getElementById("btn-fechar-detalhes")
+        .addEventListener("click", () => {
+            document.getElementById("detalhes-pedido").hidden = true;
+        });
 });
 
 async function carregarPedidos() {
     const tabela = document.getElementById("lista-pedidos");
-    const mensagem = document.getElementById("mensagem");
+
+    tabela.innerHTML = "<tr><td colspan='7'>Carregando pedidos...</td></tr>";
+    mostrarMensagem("Carregando pedidos...", false);
 
     try {
-        mostrarMensagem("Carregando pedidos...", false);
-
         const resposta = await fetch(API_URL);
 
         if (!resposta.ok) {
-            throw new Error("Não foi possível carregar os pedidos.");
+            throw new Error(await lerErro(resposta, "Não foi possível carregar os pedidos."));
         }
 
         const pedidos = await resposta.json();
-
         tabela.innerHTML = "";
 
         if (pedidos.length === 0) {
-            tabela.innerHTML = `
-                <tr>
-                    <td colspan="6">Nenhum pedido cadastrado.</td>
-                </tr>
-            `;
-
+            tabela.innerHTML = "<tr><td colspan='7'>Nenhum pedido cadastrado.</td></tr>";
             mostrarMensagem("", false);
             return;
         }
 
         pedidos.forEach((pedido) => {
             const linha = document.createElement("tr");
+            const id = pedido.id || "";
+            const status = pedido.status || "";
 
             linha.innerHTML = `
-                <td>${pedido.id || "-"}</td>
-                <td>${obterNomeCliente(pedido)}</td>
-                <td>${formatarData(pedido.criadoEm)}</td>
-                <td>${pedido.itens ? pedido.itens.length : 0}</td>
-                <td>${formatarMoeda(pedido.total)}</td>
-                <td>${pedido.status || "-"}</td>
+                <td>${escaparHTML(id || "-")}</td>
+                <td>${escaparHTML(obterNomeCliente(pedido))}</td>
+                <td>${escaparHTML(formatarData(pedido.criadoEm))}</td>
+                <td>${Array.isArray(pedido.itens) ? pedido.itens.length : 0}</td>
+                <td>${escaparHTML(formatarMoeda(pedido.total))}</td>
+                <td>${escaparHTML(status || "-")}</td>
                 <td>
-                    <button type="button" class="btn-detalhes">
-                        Detalhes
-                    </button>
+                    <button type="button" class="btn-detalhes">Detalhes</button>
+                    <div class="acoes-status"></div>
+                    <button type="button" class="btn-cancelar">Cancelar</button>
                 </td>
             `;
 
-            linha.querySelector(".btn-detalhes").addEventListener(
-                "click",
-                () => mostrarDetalhes(pedido)
-            );
+            linha.querySelector(".btn-detalhes")
+                .addEventListener("click", () => mostrarDetalhes(pedido));
+
+            const areaStatus = linha.querySelector(".acoes-status");
+            const proximoStatus = obterProximoStatus(status);
+
+            if (proximoStatus && id) {
+                const botaoStatus = document.createElement("button");
+                botaoStatus.type = "button";
+                botaoStatus.textContent = "Avançar para " + proximoStatus;
+                botaoStatus.addEventListener("click", () =>
+                    atualizarStatus(id, proximoStatus)
+                );
+                areaStatus.appendChild(botaoStatus);
+            }
+
+            const botaoCancelar = linha.querySelector(".btn-cancelar");
+
+            if (status === "CANCELADO" || status === "ENTREGUE" || !id) {
+                botaoCancelar.disabled = true;
+            } else {
+                botaoCancelar.addEventListener("click", () => cancelarPedido(id));
+            }
 
             tabela.appendChild(linha);
         });
 
         mostrarMensagem("", false);
     } catch (erro) {
-        console.error("Erro ao carregar pedidos:", erro);
-
-        tabela.innerHTML = `
-            <tr>
-                <td colspan="7">
-                    Não foi possível carregar os pedidos.
-                    Verifique se a API está funcionando.
-                </td>
-            </tr>
-        `;
-
+        tabela.innerHTML = "<tr><td colspan='7'>Não foi possível carregar os pedidos.</td></tr>";
         mostrarMensagem(erro.message, true);
     }
 }
 
-function obterNomeCliente(pedido) {
-    if (pedido.clienteSnapshot) {
-        return pedido.clienteSnapshot.nome
-            || pedido.clienteSnapshot.nomeCliente
-            || pedido.clienteId
-            || "-";
-    }
+function obterProximoStatus(status) {
+    const proximos = {
+        CRIADO: "PAGO",
+        PAGO: "ENVIADO",
+        ENVIADO: "ENTREGUE"
+    };
 
-    return pedido.clienteId || "-";
+    return proximos[status] || null;
 }
 
-function mostrarDetalhes(pedido) {
-    const secao = document.getElementById("detalhes-pedido");
-
-    if (!secao) {
+async function atualizarStatus(id, status) {
+    if (!confirm(`Deseja avançar o pedido para ${status}?`)) {
         return;
     }
 
-    document.getElementById("detalhe-id").textContent =
-        pedido.id || "-";
+    try {
+        const resposta = await fetch(
+            `${API_URL}/${encodeURIComponent(id)}/status?status=${encodeURIComponent(status)}`,
+            {method: "PUT"}
+        );
 
-    document.getElementById("detalhe-cliente").textContent =
-        obterNomeCliente(pedido);
+        if (!resposta.ok) {
+            throw new Error(await lerErro(resposta, "Não foi possível atualizar o status."));
+        }
 
-    document.getElementById("detalhe-status").textContent =
-        pedido.status || "-";
+        mostrarMensagem("Status atualizado com sucesso.", false);
+        await carregarPedidos();
+    } catch (erro) {
+        mostrarMensagem(erro.message, true);
+    }
+}
 
-    document.getElementById("detalhe-data").textContent =
-        formatarData(pedido.criadoEm);
+async function cancelarPedido(id) {
+    if (!confirm("Tem certeza de que deseja cancelar este pedido?")) {
+        return;
+    }
 
-    document.getElementById("detalhe-total").textContent =
-        formatarMoeda(pedido.total);
+    try {
+        const resposta = await fetch(`${API_URL}/${encodeURIComponent(id)}`, {
+            method: "DELETE"
+        });
 
-    const listaItens = document.getElementById("detalhe-itens");
-    listaItens.innerHTML = "";
+        if (!resposta.ok) {
+            throw new Error(await lerErro(resposta, "Não foi possível cancelar o pedido."));
+        }
 
-    if (pedido.itens && pedido.itens.length > 0) {
+        document.getElementById("detalhes-pedido").hidden = true;
+        mostrarMensagem("Pedido cancelado. O estoque será atualizado pelo backend.", false);
+        await carregarPedidos();
+    } catch (erro) {
+        mostrarMensagem(erro.message, true);
+    }
+}
+
+function mostrarDetalhes(pedido) {
+    document.getElementById("detalhe-id").textContent = pedido.id || "-";
+    document.getElementById("detalhe-cliente").textContent = obterNomeCliente(pedido);
+    document.getElementById("detalhe-status").textContent = pedido.status || "-";
+    document.getElementById("detalhe-data").textContent = formatarData(pedido.criadoEm);
+    document.getElementById("detalhe-total").textContent = formatarMoeda(pedido.total);
+
+    const lista = document.getElementById("detalhe-itens");
+    lista.innerHTML = "";
+
+    if (Array.isArray(pedido.itens) && pedido.itens.length > 0) {
         pedido.itens.forEach((itemPedido) => {
             const item = document.createElement("li");
 
@@ -127,22 +162,26 @@ function mostrarDetalhes(pedido) {
                 `Unitário: ${formatarMoeda(itemPedido.precoUnitario)} | ` +
                 `Subtotal: ${formatarMoeda(itemPedido.subtotal)}`;
 
-            listaItens.appendChild(item);
+            lista.appendChild(item);
         });
     } else {
-        listaItens.innerHTML = "<li>Nenhum item encontrado.</li>";
+        lista.innerHTML = "<li>Nenhum item encontrado.</li>";
     }
 
-    const endereco = pedido.enderecoEntrega;
-
     document.getElementById("detalhe-endereco").textContent =
-        formatarEndereco(endereco);
+        formatarEndereco(pedido.enderecoEntrega);
 
+    const secao = document.getElementById("detalhes-pedido");
     secao.hidden = false;
-    secao.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-    });
+    secao.scrollIntoView({behavior: "smooth", block: "start"});
+}
+
+function obterNomeCliente(pedido) {
+    if (pedido.clienteSnapshot) {
+        return pedido.clienteSnapshot.nome || pedido.clienteId || "-";
+    }
+
+    return pedido.clienteId || "-";
 }
 
 function formatarEndereco(endereco) {
@@ -150,7 +189,7 @@ function formatarEndereco(endereco) {
         return "Endereço não informado.";
     }
 
-    const partes = [
+    return [
         endereco.logradouro,
         endereco.numero,
         endereco.complemento,
@@ -158,45 +197,43 @@ function formatarEndereco(endereco) {
         endereco.cidade,
         endereco.uf,
         endereco.cep
-    ];
-
-    return partes
-        .filter((parte) => parte !== null && parte !== undefined && parte !== "")
-        .join(", ");
+    ].filter((parte) => parte !== null && parte !== undefined && parte !== "")
+        .join(", ") || "Endereço não informado.";
 }
 
 function formatarMoeda(valor) {
-    if (valor === null || valor === undefined || valor === "") {
-        valor = 0;
-    }
-
-    return Number(valor).toLocaleString("pt-BR", {
+    return Number(valor ?? 0).toLocaleString("pt-BR", {
         style: "currency",
         currency: "BRL"
     });
 }
 
 function formatarData(data) {
-    if (!data) {
-        return "-";
-    }
+    if (!data) return "-";
 
     const dataFormatada = new Date(data);
 
-    if (Number.isNaN(dataFormatada.getTime())) {
-        return data;
-    }
+    return Number.isNaN(dataFormatada.getTime())
+        ? String(data)
+        : dataFormatada.toLocaleString("pt-BR");
+}
 
-    return dataFormatada.toLocaleString("pt-BR");
+async function lerErro(resposta, mensagemPadrao) {
+    const texto = await resposta.text();
+    return texto || mensagemPadrao;
 }
 
 function mostrarMensagem(texto, erro) {
     const mensagem = document.getElementById("mensagem");
-
-    if (!mensagem) {
-        return;
-    }
-
     mensagem.textContent = texto;
     mensagem.style.color = erro ? "red" : "";
+}
+
+function escaparHTML(valor) {
+    return String(valor ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 }
