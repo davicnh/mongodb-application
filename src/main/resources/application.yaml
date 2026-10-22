@@ -2,7 +2,7 @@ spring:
   application:
     name: app-mongodb
   mongodb:
-    uri: mongodb+srv://davicunha910_db_user:255225@trabalho-mongodb.qr2nij1.mongodb.net/
+    uri: app-mongodb
     database: ecommerce
   data:
     mongodb:
